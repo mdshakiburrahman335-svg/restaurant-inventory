@@ -18,11 +18,6 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Custom Logout
-    |--------------------------------------------------------------------------
-    */
     Route::post('/custom-logout', function (Request $request) {
         Auth::guard('web')->logout();
 
@@ -32,19 +27,10 @@ Route::middleware(['auth'])->group(function () {
         return redirect()->route('login');
     })->name('custom.logout');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Dashboard
-    |--------------------------------------------------------------------------
-    */
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin + Manager Routes
-    |--------------------------------------------------------------------------
-    */
+    
     Route::middleware(['role:admin,manager'])->group(function () {
 
         Route::get('ingredients/{ingredient}/restock', [IngredientController::class, 'restockForm'])
@@ -63,11 +49,7 @@ Route::middleware(['auth'])->group(function () {
             ->name('stock-movements.index');
     });
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin + Manager + Staff Routes
-    |--------------------------------------------------------------------------
-    */
+   
     Route::middleware(['role:admin,manager,staff'])->group(function () {
         Route::resource('orders', OrderController::class);
     });
